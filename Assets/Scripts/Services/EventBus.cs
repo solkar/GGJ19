@@ -1,5 +1,6 @@
 ﻿
 using System;
+using UnityEngine;
 
 public static class EventBus
 {
@@ -44,6 +45,8 @@ public static class EventBus
     
     public static Event OnPlayerDamage = new Event();
     public static Event OnPlayerAttack = new Event();
-    
+    public static Event<int> OnPlayerHeal   = new Event<int>();
+    public static Event OnPlayerHealthMax = new Event();
+
     #endregion
 }
