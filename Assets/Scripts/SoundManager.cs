@@ -26,9 +26,7 @@ public class SoundManager : MonoBehaviour
     
     private void Awake()
     {
-        var audioSourceObject = transform.Find("Main Camera");
-        Assert.IsNotNull(audioSourceObject);
-        _audioSource = audioSourceObject.GetComponent<AudioSource>();
+        _audioSource = GetComponent<AudioSource>();
             
         EventBus.OnPlayerAttack.evt += () => { PlaySingle(soundBank.playerAttack); };
         EventBus.OnPlayerDamage.evt += () => { PlaySingle(soundBank.playerDamage); };
