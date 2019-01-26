@@ -9,7 +9,7 @@ public class GameExitHouseState : IFSMState
     public struct Settings
     {
         [SerializeField]
-        public string houseScene;
+        public string worldScene;
     }
 
     private Settings settings;
@@ -23,10 +23,13 @@ public class GameExitHouseState : IFSMState
 
     public IEnumerator Enter()
     {
+        SceneManager.LoadScene(settings.worldScene);
+
         yield break;
     }
 
     public void Exit()
     {
+        SceneManager.UnloadSceneAsync(settings.worldScene);
     }
 }

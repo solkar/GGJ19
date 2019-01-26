@@ -26,13 +26,13 @@ public class GameStateFSM : MonoBehaviour
     [SerializeField]
     private State state;
     private float lastStateChange;
-    private State stateRequest;
+    private State? stateRequest;
     private Coroutine lastCoroutine;
 
     protected void Awake()
     {
-        //EventBus.OnEnterHouse.evt += () => { stateRequest = State.EnterHouse; };
-        //EventBus.OnExitHouse.evt += () => { stateRequest = State.ExitHouse; };
+        EventBus.OnEnterHouse.evt += () => { stateRequest = State.EnterHouse; };
+        EventBus.OnExitHouse.evt += () => { stateRequest = State.ExitHouse; };
     }
 
     IEnumerator Start()
@@ -50,6 +50,11 @@ public class GameStateFSM : MonoBehaviour
             {
                 // Evaluate conditions to change the behaviour
                 {
+                    if (stateRequest.HasValue)
+                    {
+                        newState = stateRequest.Value;
+                        stateRequest = null;
+                    }
                 }
 
                 if (newState != state)

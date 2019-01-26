@@ -37,6 +37,6 @@ public static class EventBus
 
     #endregion
 
-    public static Event OnEnterHouse;
-    public static Event OnExitHouse;
+    public static Event OnEnterHouse = new Event();
+    public static Event OnExitHouse = new Event();
 }
