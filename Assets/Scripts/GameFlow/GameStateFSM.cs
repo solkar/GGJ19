@@ -84,18 +84,19 @@ public class GameStateFSM : MonoBehaviour
                     switch (newState)
                     {
                         case State.EnterHouse:
-                            {
-                                lastCoroutine = StartCoroutine(enterHouseState.Enter());
-                            }
+                        {
+                            lastCoroutine = StartCoroutine(enterHouseState.Enter());
+                        }
                             break;
 
                         case State.ExitHouse:
-                            {
-                                lastCoroutine = StartCoroutine(exitHouseState.Enter());
-                            }
+                        {
+                            lastCoroutine = StartCoroutine(exitHouseState.Enter());
+                        }
                             break;
 
                     }
+
                     state = newState;
                     lastStateChange = Time.time;
                 }

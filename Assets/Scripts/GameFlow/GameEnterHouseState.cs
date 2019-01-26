@@ -10,6 +10,9 @@ public class GameEnterHouseState : IFSMState
     {
         [SerializeField]
         public string houseScene;
+
+        [SerializeField] 
+        public string hudScene;
     }
 
     private Settings settings;
@@ -24,6 +27,10 @@ public class GameEnterHouseState : IFSMState
     public IEnumerator Enter()
     {
         SceneManager.LoadScene(settings.houseScene);
+        
+        // TODO: trigger heal all HP
+        SceneManager.LoadScene(settings.hudScene, LoadSceneMode.Additive);
+        
 
         yield break;
     }

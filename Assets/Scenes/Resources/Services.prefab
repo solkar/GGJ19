@@ -103,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enterHouse:
     houseScene: Home
+    hudScene: Hud
   exitHouse:
     worldScene: World
   state: 0
@@ -113,11 +114,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7503848544265975781}
     m_Modifications:
-    - target: {fileID: 8920650928114753771, guid: 90f0f6980178843259853e80ab037108,
-        type: 3}
-      propertyPath: m_Name
-      value: Main Camera
-      objectReference: {fileID: 0}
     - target: {fileID: 8920650928114753772, guid: 90f0f6980178843259853e80ab037108,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -172,6 +168,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8920650928114753771, guid: 90f0f6980178843259853e80ab037108,
+        type: 3}
+      propertyPath: m_Name
+      value: Main Camera
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8920650928114753773, guid: 90f0f6980178843259853e80ab037108, type: 3}
