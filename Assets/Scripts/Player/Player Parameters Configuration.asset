@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61464f6e6bf44ae18e018d3b8865d1c, type: 3}
+  m_Name: Player Parameters Configuration
+  m_EditorClassIdentifier: 
+  playerConfig:
+    speed: 6
+    dashLength: 2
+    dashRefillRate: 5
+    numberOfDashesAvailable: 2
+    characterHealth: 3
+    hitStunTime: 2
+    invincibilityTime: 2
+    attackDamage: 10
+    attackRange: 5
+    attackWindUpTime: 5
+    attackStrikeTime: 5
+    attackRecoverTime: 2
+    attackKnockBack: 5

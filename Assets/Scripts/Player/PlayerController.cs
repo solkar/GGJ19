@@ -5,9 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    float speed = 6.0f, jumpSpeed = 8.0f, dashLength = 2.0f, dashRefillRate = 5.0f;
-    [SerializeField]
-    int numberOfDashesAvailable = 1;
+    PlayerConfig parameters;
 
     enum PlayerState
     {
@@ -15,16 +13,16 @@ public class PlayerController : MonoBehaviour
         idle, walking, attacking, dashing
     }
 
-    PlayerState currentState;
-    private Vector3 lastPosition = new Vector3(0, 0, 0);
-    private float gravity = 20.0f;
-    private Vector3 moveDirection = Vector3.zero;
+    private float speed, dashLength, dashRefillRate, gravity = 20.0f;
+    private int numberOfDashesAvailable = 1;
+    private Vector3 moveDirection = Vector3.zero, lastPosition = new Vector3(0, 0, 0);
     private CharacterController controller;
+    private PlayerState currentState;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        //gameObject.transform.position = new Vector3(0, 5, 0);
+        speed = parameters.playerConfig.speed;
     }
 
     void Update()
