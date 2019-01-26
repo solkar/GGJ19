@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
 
     enum PlayerState
     {
-        idle, walking, attacking
+        //Things that depend on inputs/controllers
+        idle, walking, attacking, dashing
     }
 
     PlayerState currentState;
@@ -32,18 +33,20 @@ public class PlayerController : MonoBehaviour
 
         if (lastPosition != gameObject.transform.position)
         {
+            currentState = PlayerState.walking;
             GetComponent<Animator>().SetBool("Idle", false);
             GetComponent<Animator>().SetTrigger("Walking");
         }
         else
         {
-
+            currentState = PlayerState.idle;
             GetComponent<Animator>().SetBool("Idle", true);
 
         }
 
         lastPosition = gameObject.transform.position;
         // Apply movement based on gravity
+
         moveDirection.y = moveDirection.y - (gravity * Time.deltaTime);
 
         // Move the controller
@@ -52,14 +55,11 @@ public class PlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (controller.isGrounded)
-        {
-            currentState = PlayerState.walking;
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
-            moveDirection = transform.TransformDirection(moveDirection);
-            moveDirection = moveDirection * speed;
 
-        }
+        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+        transform.rotation = Quaternion.LookRotation(moveDirection);
+        moveDirection = moveDirection * speed;
+
     }
 
 }
