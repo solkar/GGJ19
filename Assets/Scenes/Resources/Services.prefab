@@ -71,6 +71,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cedc8453ec3984752abcba314473bc6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundBank:
+    playerAttack: {fileID: 8300000, guid: ccf8c224002454c179448335b3b27b18, type: 3}
+    playerDamage: {fileID: 8300000, guid: ccf8c224002454c179448335b3b27b18, type: 3}
 --- !u!1 &6285814056783136190
 GameObject:
   m_ObjectHideFlags: 0
