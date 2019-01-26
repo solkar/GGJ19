@@ -16,7 +16,7 @@ public struct PlayerScriptableParameters
     public float invincibilityTime;
 
     [Header("Character Combat System")]
-    public float attackDamage;
+    public int attackDamage;
     public float attackRange;
     public float attackWindUpTime;
     public float attackStrikeTime;

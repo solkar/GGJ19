@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player Parameters Configuration
   m_EditorClassIdentifier: 
   playerConfig:
-    speed: 2.5
+    speed: 2
     dashLength: 2
     dashRefillRate: 5
     numberOfDashesAvailable: 2
