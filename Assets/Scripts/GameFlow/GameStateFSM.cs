@@ -16,10 +16,10 @@ public class GameStateFSM : MonoBehaviour
     #region serializable fields
 
     [SerializeField]
-    private GameEnterHouseState.Settings enterHouse;
+    public GameEnterHouseState.Settings enterHouse;
 
     [SerializeField]
-    private GameExitHouseState.Settings exitHouse;
+    public GameExitHouseState.Settings exitHouse;
 
     #endregion
 
