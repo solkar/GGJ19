@@ -14,6 +14,9 @@ public class SoundManager : MonoBehaviour
         
         [SerializeField]
         public AudioClip playerDamage;
+        
+        [SerializeField]
+        public AudioClip doorClosing;
     }
     
     [SerializeField]
@@ -23,12 +26,13 @@ public class SoundManager : MonoBehaviour
     
     private void Awake()
     {
-        var audioSourceObject = transform.Find("MainCamera");
+        var audioSourceObject = transform.Find("Main Camera");
         Assert.IsNotNull(audioSourceObject);
         _audioSource = audioSourceObject.GetComponent<AudioSource>();
             
         EventBus.OnPlayerAttack.evt += () => { PlaySingle(soundBank.playerAttack); };
         EventBus.OnPlayerDamage.evt += () => { PlaySingle(soundBank.playerDamage); };
+        EventBus.OnExitHouse.evt    += () => { PlaySingle(soundBank.doorClosing); };
     }
     
     public void PlaySingle(AudioClip clip)

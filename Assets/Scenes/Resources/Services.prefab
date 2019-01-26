@@ -74,6 +74,7 @@ MonoBehaviour:
   soundBank:
     playerAttack: {fileID: 8300000, guid: ccf8c224002454c179448335b3b27b18, type: 3}
     playerDamage: {fileID: 8300000, guid: ccf8c224002454c179448335b3b27b18, type: 3}
+    doorClosing: {fileID: 8300000, guid: 6afb8ff2c066449afba91b9f9a9c8498, type: 3}
 --- !u!1 &6285814056783136190
 GameObject:
   m_ObjectHideFlags: 0
