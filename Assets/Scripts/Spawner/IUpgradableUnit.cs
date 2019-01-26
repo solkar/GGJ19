@@ -1,5 +1,5 @@
 ﻿
 public interface IUpgradableUnit
 {
-    void Update(Upgrade upgrade);
+    void Upgrade(Upgrade upgrade);
 }

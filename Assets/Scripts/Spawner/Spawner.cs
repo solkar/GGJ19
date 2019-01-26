@@ -58,7 +58,7 @@ public class Spawner : MonoBehaviour
                 {
                     var upgradableUnit = instance as IUpgradableUnit;
                     var upgrade = updades.GetUpgrade(round);
-                    upgradableUnit.Update(upgrade);
+                    upgradableUnit.Upgrade(upgrade);
                 }
             }
             catch (Exception e)
