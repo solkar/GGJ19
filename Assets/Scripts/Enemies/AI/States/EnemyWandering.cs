@@ -5,7 +5,7 @@ using System;
 
 namespace Enemies
 {
-    [CreateAssetMenu(fileName = "EnemyWandering", menuName = "EnemyWanderingSettings")]
+    [CreateAssetMenu(fileName = "EnemyWandering", menuName = "Scriptable Objects/EnemyWanderingSettings")]
     public class EnemyWandering : ScriptableObject
     {
         [Serializable]

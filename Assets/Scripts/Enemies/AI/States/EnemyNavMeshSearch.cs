@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace Enemies
 {
-    [CreateAssetMenu(fileName = "NavMeshSearch", menuName = "NavMeshSearch")]
+    [CreateAssetMenu(fileName = "NavMeshSearch", menuName = "Scriptable Objects/NavMeshSearch")]
     public class EnemyNavMeshSearch : ScriptableObject
     {
         [Serializable]
