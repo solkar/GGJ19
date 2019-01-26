@@ -39,4 +39,11 @@ public static class EventBus
 
     public static Event OnEnterHouse = new Event();
     public static Event OnExitHouse = new Event();
+    
+    #region Player Events
+    
+    public static Event OnPlayerDamage = new Event();
+    public static Event OnPlayerAttack = new Event();
+    
+    #endregion
 }
