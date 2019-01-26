@@ -104,7 +104,8 @@ MonoBehaviour:
   enterHouse:
     houseScene: Home
   exitHouse:
-    houseScene: 
+    worldScene: World
+  state: 0
 --- !u!1001 &5718322920566887196
 PrefabInstance:
   m_ObjectHideFlags: 0
