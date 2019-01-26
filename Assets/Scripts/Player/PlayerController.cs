@@ -7,22 +7,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     PlayerConfig parameters;
 
-    enum PlayerState
-    {
-        //Things that depend on inputs/controllers
-        idle, walking, attacking, dashing
-    }
-
     private float speed, dashLength, dashRefillRate, attackHitPoints, attackRange;
     private int numberOfDashesAvailable;
 
     private readonly float gravity = 20.0f;
     private Vector3 moveDirection = Vector3.zero, lastPosition = new Vector3(0, 0, 0);
     private CharacterController controller;
-    private PlayerState currentState;
+    private CharacterStateMachine stateMachine;
 
     void Start()
     {
+        stateMachine = GetComponent<CharacterStateMachine>();
         controller = GetComponent<CharacterController>();
         //Player setup stuff
         speed = parameters.playerConfig.speed;
@@ -37,32 +32,23 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (currentState != PlayerState.attacking)
+        if (stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.attacking)
             MovePlayer();
 
         if (lastPosition != gameObject.transform.position)
-        {
-            currentState = PlayerState.walking;
-            GetComponent<Animator>().SetBool("Idle", false);
-            GetComponent<Animator>().SetTrigger("Walking");
-        }
+            stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.walking);
         else
-        {
-            currentState = PlayerState.idle;
-            GetComponent<Animator>().SetBool("Idle", true);
+            stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
 
-        }
-
-        if (Input.GetKey(KeyCode.Mouse0) && currentState != PlayerState.walking && currentState != PlayerState.attacking)
+        if (Input.GetKey(KeyCode.Mouse0) && stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.walking && stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.attacking)
         {
-            currentState = PlayerState.attacking;
+            stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.attacking);
             PerformAttack();
         }
 
-
         if (Input.GetKey(KeyCode.Mouse1))
         {
-            currentState = PlayerState.dashing;
+            stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.dashing);
             PerformeDashing();
         }
 
@@ -86,14 +72,13 @@ public class PlayerController : MonoBehaviour
 
     private void PerformeDashing()
     {
-        GetComponent<Animator>().SetTrigger("Dashing");
         moveDirection = moveDirection * dashLength;
         moveDirection.Normalize();
     }
 
     private void PerformAttack()
     {
-        GetComponent<Animator>().SetTrigger("Attacking");
+
     }
 
     //Hitting the enemy
