@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 public class GameEnterHouseState : IFSMState
 {
@@ -16,6 +17,7 @@ public class GameEnterHouseState : IFSMState
     }
 
     private Settings settings;
+    private bool _maxHealth; 
 
     public GameEnterHouseState(
         Settings settings
@@ -28,9 +30,12 @@ public class GameEnterHouseState : IFSMState
     {
         SceneManager.LoadScene(settings.houseScene);
         
-        // TODO: trigger heal all HP
+        
         SceneManager.LoadScene(settings.hudScene, LoadSceneMode.Additive);
         
+        EventBus.OnPlayerHealthMax.evt += () => { _maxHealth = true; };
+
+        yield return AutoHealCoroutine();
 
         yield break;
     }
@@ -39,4 +44,20 @@ public class GameEnterHouseState : IFSMState
     {
         SceneManager.UnloadSceneAsync(settings.houseScene);
     }
+
+    private IEnumerator AutoHealCoroutine()
+    {
+        yield return new WaitForSeconds(2.0f);
+
+        _maxHealth = false;
+        while (_maxHealth == false)
+        {
+            EventBus.OnPlayerHeal.Invoke(1);
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        yield return null;
+    }
+
 }
