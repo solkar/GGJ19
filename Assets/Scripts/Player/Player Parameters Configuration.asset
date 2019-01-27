@@ -22,10 +22,11 @@ MonoBehaviour:
     hitStunTime: 2
     invincibilityTime: 2
     attackDamage: 10
-    attackRange: 90
+    attackRange: 180
     attackWindUpTime: 5
     attackStrikeTime: 5
     attackRecoverTime: 2
     attackKnockBack: 5
     attackDistance: 2
+    attackAnimationDelay: 0.1
     attackAnimation: {fileID: 7400000, guid: 8f6463221102c4b40acd00c9ed374bfd, type: 2}
