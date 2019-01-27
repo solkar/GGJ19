@@ -50,4 +50,14 @@ public class Inventory : Singleton<Inventory>
 
         return list;
     }
+
+    public void OnConsumeItem(Item item)
+    {
+        Debug.LogWarning("Consume item:" + item.name);
+    }
+
+    public void AddItem(Item item)
+    {
+        // TODO: limit to 8 items
+    }
 }

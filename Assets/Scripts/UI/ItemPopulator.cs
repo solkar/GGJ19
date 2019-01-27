@@ -6,27 +6,34 @@ using UnityEngine.UI;
 
 public class ItemPopulator : MonoBehaviour
 {
-    private List<Image> _childList = new List<Image>();
+    private List<InventoryItemView> _childList = new List<InventoryItemView>();
     
     // Start is called before the first frame update
     void Start()
     {
-        transform.GetComponentsInChildren<Image>(true, _childList);
-        _childList.Remove(GetComponent<Image>());
-        FeedSpriteList(Inventory.instance.GetItemSpriteList());
+        transform.GetComponentsInChildren<InventoryItemView>(true, _childList);
+        FeedItemList(Inventory.instance.GetItemList());
         Assert.IsTrue(_childList.Count > 0);
     }
 
 
-    public void FeedSpriteList(List<Sprite> imageList)
+//    public void FeedSpriteList(List<Sprite> imageList)
+//    {
+//        Assert.IsTrue(imageList.Count > 0);
+//        Assert.IsTrue(imageList.Count <= _childList.Count);
+//
+//        for (int i = 0; i < imageList.Count; i++)
+//        {
+//            _childList[i].sprite = imageList[i];
+//        }
+//
+//    }
+
+    public void FeedItemList(List<Inventory.Item> itemList)
     {
-        Assert.IsTrue(imageList.Count > 0);
-        Assert.IsTrue(imageList.Count <= _childList.Count);
-
-        for (int i = 0; i < imageList.Count; i++)
+        for (int i = 0; i < itemList.Count; i++)
         {
-            _childList[i].sprite = imageList[i];
+            _childList[i].SetItem(itemList[i]);
         }
-
     }
 }
