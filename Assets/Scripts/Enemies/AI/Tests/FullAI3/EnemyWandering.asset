@@ -16,4 +16,4 @@ MonoBehaviour:
     aroundPosition: {x: 0, y: 0, z: 0}
     wanderingDirectionChangePeriod: 1
     wanderingDistance: 1
-    wanderingSpeed: 4
+    wanderingSpeed: 1
