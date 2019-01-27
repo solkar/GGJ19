@@ -9,9 +9,9 @@ namespace Enemies
     public class EnemyNavMeshSearch : ScriptableObject
     {
         [Serializable]
-        public struct Settings
+        public class Settings
         {
-
+            public float followSpeed = 3;
         }
 
         [SerializeField]
@@ -36,6 +36,7 @@ namespace Enemies
 
             public IEnumerator Enter()
             {
+                agent.speed = settings.followSpeed;
                 agent.destination = agent.transform.position;
 
                 while (true)
