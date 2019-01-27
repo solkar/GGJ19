@@ -93,7 +93,7 @@ public class CharacterStateMachine : MonoBehaviour
 
     private void DeadState()
     {
-        playerAnimator.SetBool("Death", true);
+        playerAnimator.SetTrigger("Death");
     }
 
 }

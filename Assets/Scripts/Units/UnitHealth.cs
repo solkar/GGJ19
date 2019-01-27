@@ -11,7 +11,7 @@ public sealed class UnitHealth : MonoBehaviour, IUpgradableUnit
     #endregion
 
     public event Action<float> OnDamage;
-
+    private CharacterStateMachine stateMachine;
     public float health { get; private set; }
     public float totalHealth { get; private set; }
     public float healthNormalized
@@ -24,6 +24,7 @@ public sealed class UnitHealth : MonoBehaviour, IUpgradableUnit
 
     protected void Awake()
     {
+        stateMachine = GetComponent<CharacterStateMachine>();
         health = totalHealth = baseHealth;
     }
 
@@ -38,9 +39,17 @@ public sealed class UnitHealth : MonoBehaviour, IUpgradableUnit
 
         if (health < 0)
         {
+            stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.dead);
+            StartCoroutine(RemoveUnit());
             Debug.Log("Dead!!");
         }
 
         OnDamage?.Invoke(damage);
+    }
+
+    IEnumerator RemoveUnit()
+    {
+        yield return new WaitForSeconds(1);
+        Destroy(this.gameObject);
     }
 }
