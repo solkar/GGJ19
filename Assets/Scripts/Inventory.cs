@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Net.Mime;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inventory : Singleton<Inventory>
 {
@@ -8,10 +10,15 @@ public class Inventory : Singleton<Inventory>
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    public struct Item
     {
-        
+        public string name;
+        public Image image;
+    }
+
+    public List<Item> GetItemList()
+    {
+        var dummyList = new List<Item>(){ new Item(), new Item()};
+        return dummyList;
     }
 }
