@@ -24,6 +24,7 @@ public sealed class UnitHealth : MonoBehaviour, IUpgradableUnit
 
     protected void Awake()
     {
+        stateMachine = GetComponent<CharacterStateMachine>();
         health = totalHealth = baseHealth;
     }
 
