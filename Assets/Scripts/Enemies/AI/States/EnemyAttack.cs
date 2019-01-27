@@ -68,36 +68,6 @@ namespace Enemies
                 done = true;
             }
 
-            public void OnDrawGizmos()
-            {
-#if UNITY_EDITOR
-                var transform = agent.transform;
-                var originalColor = UnityEditor.Handles.color;
-                var range = settings.attackRange;
-                var attackDistante = settings.attackDistance;
-
-                UnityEditor.Handles.color = new Color(1, 0, 0, .1f);
-
-                UnityEditor.Handles.DrawSolidArc(
-                    transform.position,
-                    transform.up,
-                    Quaternion.Euler(0, -range / 2, 0) * transform.forward,
-                    range,
-                    attackDistante);
-
-                UnityEditor.Handles.color = new Color(0, 1, 0, .1f);
-
-                UnityEditor.Handles.DrawSolidArc(
-                    transform.position,
-                    transform.up,
-                    Vector3.forward,
-                    360,
-                    settings.detectDistance);
-
-                UnityEditor.Handles.color = originalColor;
-#endif
-            }
-
             public void Exit()
             {
             }
