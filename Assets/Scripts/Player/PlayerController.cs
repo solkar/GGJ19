@@ -225,8 +225,8 @@ public class PlayerController : MonoBehaviour
     {
 #if UNITY_EDITOR
 
-        var attackDistance = parameters.playerConfig.attackDistance;
-        var attackRange = parameters.playerConfig.attackRange;
+        var attackDistance = parameters.playerConfig.attackRange;
+        var attackAngle = parameters.playerConfig.attackAngle;
 
         var originalColor = UnityEditor.Handles.color;
 
@@ -235,8 +235,8 @@ public class PlayerController : MonoBehaviour
         UnityEditor.Handles.DrawSolidArc(
             transform.position,
             transform.up,
-            Quaternion.Euler(0, -attackRange / 2, 0) * transform.forward,
-            attackRange,
+            Quaternion.Euler(0, -attackAngle / 2, 0) * transform.forward,
+            attackAngle,
             attackDistance);
 
         UnityEditor.Handles.color = originalColor;
