@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d87ee378171804ef58bd7fc01982d216, type: 3}
   m_Name: NavMeshSearch
   m_EditorClassIdentifier: 
+  settings:
+    followSpeed: 1
