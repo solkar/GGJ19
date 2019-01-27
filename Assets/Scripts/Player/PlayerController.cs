@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     PlayerConfig parameters;
 
-    private float speed, dashLength, dashRefillRate, attackHitPoints, attackRange, initialSpeed;
+    private float speed, dashLength, dashRefillRate, attackHitPoints, attackRange, attackDistance, initialSpeed;
     private int numberOfDashesAvailable;
 
     private readonly float gravity = 20.0f;
@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         //Player setup stuff
         speed = parameters.playerConfig.speed;
+        attackDistance = parameters.playerConfig.attackDistance;
         attackHitPoints = parameters.playerConfig.attackDamage;
         attackRange = parameters.playerConfig.attackRange;
         //Dash stuff
@@ -52,8 +53,10 @@ public class PlayerController : MonoBehaviour
                 stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
         }
 
+        var fireButton1 = Input.GetAxisRaw("Fire1") != 0 || Input.GetKeyDown(KeyCode.Space);
+
         //If Fire1 and not attacking, the player can attack
-        if (Input.GetAxisRaw("Fire1") != 0 && stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.attacking)
+        if (fireButton1 && stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.attacking)
         {
             if(isAttackAxisInUse == false)
             {
@@ -63,7 +66,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(Input.GetAxisRaw("Fire1") == 0)
+        if (!fireButton1)
         {
             isAttackAxisInUse = false;
         }
@@ -101,6 +104,13 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(parameters.playerConfig.attackAnimation.length);
 
+        foreach (var enemy in Services.instance.enemies)
+        {
+            if (Hit.HitCheck(enemy.transform, transform, attackDistance, attackRange))
+            {
+                enemy.GetComponent<UnitHealth>().TakeDamage(attackHitPoints);
+            }
+        }
         stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
     }
 

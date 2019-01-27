@@ -24,34 +24,34 @@ public class CharacterStateMachine : MonoBehaviour
 
     public void RequestChangePlayerState(CharacterState? stateModifier)
     {
-
         if (stateModifier.HasValue && currentState != stateModifier)
-            currentState = stateModifier.Value;
-        else return;
-
-        switch (currentState)
         {
-            case CharacterState.idle:
-                IdleState();
-                break;
-            case CharacterState.walking:
-                WalkingState();
-                break;
-            case CharacterState.dashing:
-                DashingState();
-                break;
-            case CharacterState.attacking:
-                AttackingState();
-                break;
-            case CharacterState.takingHit:
-                TakingHitState();
-                break;
-            case CharacterState.dead:
-                DeadState();
-                break;
-        }
+            currentState = stateModifier.Value;
 
-        Debug.Log("Current state is " + currentState);
+            switch (currentState)
+            {
+                case CharacterState.idle:
+                    IdleState();
+                    break;
+                case CharacterState.walking:
+                    WalkingState();
+                    break;
+                case CharacterState.dashing:
+                    DashingState();
+                    break;
+                case CharacterState.attacking:
+                    AttackingState();
+                    break;
+                case CharacterState.takingHit:
+                    TakingHitState();
+                    break;
+                case CharacterState.dead:
+                    DeadState();
+                    break;
+            }
+
+            Debug.Log("Current state is " + currentState);
+        }
     }
 
     private void IdleState()
