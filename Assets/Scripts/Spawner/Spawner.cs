@@ -31,6 +31,7 @@ public class Spawner : MonoBehaviour
     protected void Awake()
     {
         // TODO: Wire to the signal coming from the event bus or instante when the object is created
+        Spawn();
     }
 
     [ContextMenu("SpawnUnits")]
