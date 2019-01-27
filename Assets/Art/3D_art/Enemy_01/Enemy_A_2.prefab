@@ -1408,22 +1408,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2140317827884180198, guid: f4002f15de36b432586403a299af7c79,
-        type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     - target: {fileID: 7944877574603820448, guid: f4002f15de36b432586403a299af7c79,
         type: 3}
       propertyPath: slider
       value: 
       objectReference: {fileID: 1576028119512803491}
-    - target: {fileID: 4495669618877561163, guid: f4002f15de36b432586403a299af7c79,
-        type: 3}
-      propertyPath: m_FillRect
-      value: 
-      objectReference: {fileID: 5686566543888669553}
-    - target: {fileID: 4440973288520110581, guid: f4002f15de36b432586403a299af7c79,
+    - target: {fileID: 2140317827884180198, guid: f4002f15de36b432586403a299af7c79,
         type: 3}
       propertyPath: m_Layer
       value: 9
@@ -1433,6 +1423,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4440973288520110581, guid: f4002f15de36b432586403a299af7c79,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4495669618877561163, guid: f4002f15de36b432586403a299af7c79,
+        type: 3}
+      propertyPath: m_FillRect
+      value: 
+      objectReference: {fileID: 5686566543888669553}
     - target: {fileID: 6769078173169600526, guid: f4002f15de36b432586403a299af7c79,
         type: 3}
       propertyPath: m_Layer
@@ -1440,6 +1440,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4002f15de36b432586403a299af7c79, type: 3}
+--- !u!224 &6128311277675366309 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 9129038514237494861, guid: f4002f15de36b432586403a299af7c79,
+    type: 3}
+  m_PrefabInstance: {fileID: 3151673710044254696}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5686566543888669553 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7302094965775714969, guid: f4002f15de36b432586403a299af7c79,
@@ -1458,12 +1464,6 @@ MonoBehaviour:
   m_Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &6128311277675366309 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 9129038514237494861, guid: f4002f15de36b432586403a299af7c79,
-    type: 3}
-  m_PrefabInstance: {fileID: 3151673710044254696}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8622871155181554909
 PrefabInstance:
   m_ObjectHideFlags: 0
