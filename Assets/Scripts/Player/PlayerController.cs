@@ -144,7 +144,9 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator ReturnToIdleWhenAttackIsOver()
     {
-        yield return new WaitForSeconds(parameters.playerConfig.attackAnimation.length);
+        var delay = parameters.playerConfig.attackAnimation.length - parameters.playerConfig.attackAnimationDelay;
+
+        yield return new WaitForSeconds(parameters.playerConfig.attackAnimationDelay);
 
         foreach (var enemy in Enemies.Enemy.list)
         {
@@ -157,6 +159,8 @@ public class PlayerController : MonoBehaviour
                 enemy.GetComponent<UnitHealth>().TakeDamage(attackHitPoints);
             }
         }
+
+        yield return new WaitForSeconds(delay);
 
         stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
     }

@@ -24,6 +24,7 @@ public struct PlayerScriptableParameters
     public float attackRecoverTime;
     public float attackKnockBack;
     public float attackDistance;
+    public float attackAnimationDelay;
 
     [Header("Character Animation System")]
     public AnimationClip attackAnimation;
