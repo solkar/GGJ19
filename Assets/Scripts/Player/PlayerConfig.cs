@@ -22,6 +22,9 @@ public struct PlayerScriptableParameters
     public float attackStrikeTime;
     public float attackRecoverTime;
     public float attackKnockBack;
+
+    [Header("Character Combat System")]
+    public AnimationClip attackAnimation;
 }
 
 [CreateAssetMenu(menuName = "Scriptable Objects/PlayerConfig")]

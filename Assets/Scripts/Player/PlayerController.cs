@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     private CharacterStateMachine stateMachine;
     private bool playerCanMove = true;
     Animator animator;
+
+    private bool isAttackAxisInUse = false;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -52,9 +55,19 @@ public class PlayerController : MonoBehaviour
         //If Fire1 and not attacking, the player can attack
         if (Input.GetAxisRaw("Fire1") != 0 && stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.attacking)
         {
-            stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.attacking);
-            PerformAttack();
+            if(isAttackAxisInUse == false)
+            {
+                isAttackAxisInUse = true;
+                stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.attacking);
+                ReturnToIdleWhenAttackIsOver();
+            }
         }
+
+        if(Input.GetAxisRaw("Fire1") == 0)
+        {
+            isAttackAxisInUse = false;
+        }
+
         //Ff Fire2 and there are dashing points available, the player will dash
         if (Input.GetAxisRaw("Fire2") != 0 && numberOfDashesAvailable > 0 && stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.walking)
         {
@@ -84,8 +97,10 @@ public class PlayerController : MonoBehaviour
         stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.walking);
     }
 
-    private void PerformAttack()
+    private IEnumerator ReturnToIdleWhenAttackIsOver()
     {
+        yield return new WaitForSeconds(parameters.playerConfig.attackAnimation.length);
+
         stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
     }
 
