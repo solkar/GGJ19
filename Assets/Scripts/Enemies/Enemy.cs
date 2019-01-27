@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 namespace Enemies
 {
+    [RequireComponent(typeof(CharacterStateMachine))]
     public class Enemy : MonoBehaviour
     {
         public enum State
@@ -13,6 +14,7 @@ namespace Enemies
             FollowHero,
             Attack,
             Wandering,
+            Dead,
         }
 
         #region serialized fields
@@ -38,8 +40,24 @@ namespace Enemies
         private EnemyAttack.State attackState;
         #endregion
 
+        private void Awake()
+        {
+            Services.instance.enemies.Add(this);
+        }
+
+        private void OnDestroy()
+        {
+            Services.instance.enemies.Remove(this);
+        }
+
         IEnumerator Start()
         {
+            var lastPosition = transform.position;
+
+            var animatorFSM = GetComponent<CharacterStateMachine>();
+
+            var health = GetComponent<UnitHealth>();
+
             var player = GameObject.FindGameObjectWithTag("Player");
 
             // Initialize states of the state machine
@@ -72,6 +90,12 @@ namespace Enemies
                     {
                         switch (state)
                         {
+                            case State.Idle:
+                                {
+                                    newState = State.Wandering;
+                                }
+                                break;
+
                             case State.Wandering:
                                 {
                                     var distance = player.transform.position - transform.position;
@@ -111,7 +135,32 @@ namespace Enemies
                                 break;
                         }
 
-                        newState = State.FollowHero;
+                        if (health != null && health.health <= 0)
+                        {
+                            newState = State.Dead;
+                        }
+                    }
+
+                    //
+                    {
+                        switch (newState)
+                        {
+                            case State.FollowHero:
+                            case State.Wandering:
+                                {
+                                    if ((lastPosition - transform.position).sqrMagnitude < .1f)
+                                    {
+                                        animatorFSM.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
+                                    }
+                                }
+                                break;
+
+                            case State.Dead:
+                                {
+                                    animatorFSM.RequestChangePlayerState(CharacterStateMachine.CharacterState.dead);
+                                }
+                                break;
+                        }
                     }
 
                     if (newState != state)
