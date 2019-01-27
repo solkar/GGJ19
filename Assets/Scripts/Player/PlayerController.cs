@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
                     stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.walking;
         }
     }
+
     private bool canDash
     {
         get
@@ -37,13 +38,18 @@ public class PlayerController : MonoBehaviour
                     stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.walking);
         }
     }
+
     private bool canMove
     {
         get
         {
-            return stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.idle ||
-                    stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.walking ||
-                    stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.dashing;
+            var currentState = stateMachine.GetCurrentState();
+
+            return
+                currentState == CharacterStateMachine.CharacterState.takingHit ||
+                currentState == CharacterStateMachine.CharacterState.idle ||
+                currentState == CharacterStateMachine.CharacterState.walking ||
+                currentState == CharacterStateMachine.CharacterState.dashing;
         }
     }
 
@@ -203,7 +209,6 @@ public class PlayerController : MonoBehaviour
 
             EventBus.OnPlayerDamage.Invoke();
 
-            /*
             if (health.health <= 0)
             {
                 stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.dead);
@@ -211,7 +216,6 @@ public class PlayerController : MonoBehaviour
 
                 EventBus.OnPlayerDead.Invoke();
             }
-            */
         }
 
         stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.takingHit);
