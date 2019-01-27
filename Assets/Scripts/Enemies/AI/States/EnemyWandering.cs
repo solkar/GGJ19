@@ -42,7 +42,7 @@ namespace Enemies
 
             public IEnumerator Enter()
             {
-                agent.destination = settings.aroundPosition;
+                agent.destination = agent.transform.position;
 
                 float lastTime = Time.time;
 
