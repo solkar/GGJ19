@@ -18,12 +18,13 @@ public struct PlayerScriptableParameters
 
     [Header("Character Combat System")]
     public int attackDamage;
+    public float attackAngle;
     public float attackRange;
+    public float attackArcOffset;
     public float attackWindUpTime;
     public float attackStrikeTime;
     public float attackRecoverTime;
     public float attackKnockBack;
-    public float attackDistance;
     public float attackAnimationDelay;
 
     [Header("Character Animation System")]

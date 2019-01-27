@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     PlayerConfig parameters;
 
-    private float speed, dashLength, dashRefillRate, attackHitPoints, attackRange, attackDistance, initialSpeed;
+    private float speed, dashLength, dashRefillRate, attackHitPoints, attackAngle, attackRange, initialSpeed;
     public int numberOfDashesAvailable;
     private int maxDashAvailable;
 
@@ -61,8 +61,8 @@ public class PlayerController : MonoBehaviour
         //Player setup stuff
         speed = parameters.playerConfig.speed;
         attackHitPoints = parameters.playerConfig.attackDamage;
-        attackDistance = parameters.playerConfig.attackDistance;
         attackRange = parameters.playerConfig.attackRange;
+        attackAngle = parameters.playerConfig.attackAngle;
         //Dash stuff
         dashRefillRate = parameters.playerConfig.dashRefillRate;
         dashLength = parameters.playerConfig.dashLength;
@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("One enemy found!");
 
-            if (enemy != null && Hit.HitCheck(enemy.transform, transform, attackDistance, attackRange))
+            if (enemy != null && Hit.HitCheck(enemy.transform, transform, attackRange, attackAngle))
             {
                 Debug.Log("And is being hit very hard!!!");
 
@@ -219,5 +219,27 @@ public class PlayerController : MonoBehaviour
         }
 
         stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.takingHit);
+    }
+
+    public void OnDrawGizmos()
+    {
+#if UNITY_EDITOR
+
+        var attackDistance = parameters.playerConfig.attackDistance;
+        var attackRange = parameters.playerConfig.attackRange;
+
+        var originalColor = UnityEditor.Handles.color;
+
+        UnityEditor.Handles.color = new Color(1, 0, 0, .1f);
+
+        UnityEditor.Handles.DrawSolidArc(
+            transform.position,
+            transform.up,
+            Quaternion.Euler(0, -attackRange / 2, 0) * transform.forward,
+            attackRange,
+            attackDistance);
+
+        UnityEditor.Handles.color = originalColor;
+#endif
     }
 }

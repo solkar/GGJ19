@@ -257,12 +257,34 @@ namespace Enemies
             }
         }
 
-        private void OnDrawGizmos()
+        public void OnDrawGizmos()
         {
-            if (this.attackState != null)
-            {
-                attackState.OnDrawGizmos();
-            }
+#if UNITY_EDITOR
+            var originalColor = UnityEditor.Handles.color;
+            var settings = enemyAttackSettings.settings;
+            var range = settings.attackRange;
+            var attackDistante = settings.attackDistance;
+
+            UnityEditor.Handles.color = new Color(1, 0, 0, .1f);
+
+            UnityEditor.Handles.DrawSolidArc(
+                transform.position,
+                transform.up,
+                Quaternion.Euler(0, -range / 2, 0) * transform.forward,
+                range,
+                attackDistante);
+
+            UnityEditor.Handles.color = new Color(0, 1, 0, .1f);
+
+            UnityEditor.Handles.DrawSolidArc(
+                transform.position,
+                transform.up,
+                Vector3.forward,
+                360,
+                settings.detectDistance);
+
+            UnityEditor.Handles.color = originalColor;
+#endif
         }
     }
 }
