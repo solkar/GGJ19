@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerConfig:
     speed: 2
-    dashLength: 2
-    dashRefillRate: 5
-    numberOfDashesAvailable: 2
+    dashLength: 5
+    dashDuration: 0.2
+    dashRefillRate: 2
+    numberOfDashesAvailable: 3
     characterHealth: 3
     hitStunTime: 2
     invincibilityTime: 2
@@ -26,3 +27,4 @@ MonoBehaviour:
     attackStrikeTime: 5
     attackRecoverTime: 2
     attackKnockBack: 5
+    attackAnimation: {fileID: 7400000, guid: 8f6463221102c4b40acd00c9ed374bfd, type: 2}
