@@ -36,8 +36,6 @@ public sealed class UnitHealth : MonoBehaviour, IUpgradableUnit
     {
         health -= damage;
 
-        Debug.Log("Damage!!" + health);
-
         if (health < 0)
         {
             Debug.Log("Dead!!");

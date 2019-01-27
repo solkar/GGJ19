@@ -148,8 +148,12 @@ public class PlayerController : MonoBehaviour
 
         foreach (var enemy in Enemies.Enemy.list)
         {
+            Debug.Log("One enemy found!");
+
             if (enemy != null && Hit.HitCheck(enemy.transform, transform, attackDistance, attackRange))
             {
+                Debug.Log("And is being hit very hard!!!");
+
                 enemy.GetComponent<UnitHealth>().TakeDamage(attackHitPoints);
             }
         }

@@ -147,7 +147,7 @@ namespace Enemies
                         }
                     }
 
-                    //
+                    // Always run
                     {
                         switch (newState)
                         {
@@ -183,7 +183,17 @@ namespace Enemies
                                 }
                                 break;
                         }
+
+                        /*
+                        // Ensure that the enemies are not on top of the enemies
+                        var distance = (transform.position - player.transform.position).normalized;
+                        if (distance.sqrMagnitude < 1)
+                        {
+                            transform.position = Vector3.Lerp(transform.position, player.transform.position + distance, 0.1f);
+                        }
+                        */
                     }
+
 
                     if (newState != state)
                     {
