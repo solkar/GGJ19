@@ -17,13 +17,14 @@ public class EnemyNavMeshSearchTest : MonoBehaviour
 
     IEnumerator Start()
     {
+        /*
         var wanderingState = new Enemies.EnemyNavMeshSearch.State(
             enemyAgent,
             target
         );
 
         StartCoroutine(wanderingState.Enter());
-
+        */
         yield break;
     }
 }

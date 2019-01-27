@@ -15,18 +15,21 @@ namespace Enemies
         }
 
         [SerializeField]
-        private Settings settings;
+        public Settings settings;
 
         public class State : IFSMState
         {
+            private Settings settings;
             private Transform target;
             private NavMeshAgent agent;
 
             public State(
+                Settings settings,
                 NavMeshAgent agent,
                 Transform target
             )
             {
+                this.settings = settings;
                 this.target = target;
                 this.agent = agent;
             }

@@ -1147,18 +1147,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 4134119924628558530}
-  enemyAttackSettings:
-    detectDistance: 0
-    attackDistance: 0
-    attackSpeed: 0
-    attackRange: 0
-    timeBetweenAttacks: 0
-    timeDuration: 0
-  enemyWanderingSettings:
-    aroundPosition: {x: 0, y: 0, z: 0}
-    wanderingDirectionChangePeriod: 1
-    wanderingDistance: 1
-    wanderingSpeed: 4
+  heroSearch: {fileID: 11400000, guid: e669fb671c31f4870ae9f207df6bc7c4, type: 2}
+  enemyAttackSettings: {fileID: 11400000, guid: 61592dfe30f284566a3ccb671edc7c55,
+    type: 2}
+  enemyWanderingSettings: {fileID: 11400000, guid: 6ebdb1043c20540db820c595b9753902,
+    type: 2}
 --- !u!195 &4134119924628558530
 NavMeshAgent:
   m_ObjectHideFlags: 0
