@@ -36,6 +36,9 @@ namespace Enemies
 
             public IEnumerator Enter()
             {
+                //agent.updatePosition = false;
+                //agent.updateRotation = false;
+                agent.enabled = true;
                 agent.speed = settings.followSpeed;
                 agent.destination = agent.transform.position;
 
@@ -45,6 +48,10 @@ namespace Enemies
 
                     while (agent.destination.XZ() != agent.transform.position.XZ())
                     {
+                        Debug.DrawLine(agent.transform.position, agent.nextPosition);
+
+                        //agent.GetComponent<Rigidbody>().MovePosition(agent.transform.position - agent.nextPosition);
+
                         yield return null;
                     }
 

@@ -47,6 +47,7 @@ public static class EventBus
     public static Event OnPlayerAttack = new Event();
     public static Event<int> OnPlayerHeal   = new Event<int>();
     public static Event OnPlayerHealthMax = new Event();
+    public static Event OnPlayerDead = new Event();
 
     #endregion
 }

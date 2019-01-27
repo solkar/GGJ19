@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,21 +34,25 @@ namespace Enemies
 
         #endregion
 
+        public State state { get; private set; }
+
         #region private fields
-        private State state = State.Idle;
         private Coroutine lastCoroutine;
         private float lastStateChange;
         private EnemyAttack.State attackState;
         #endregion
 
+        public static List<Enemy> list = new List<Enemy>();
+
         private void Awake()
         {
-            Services.instance.enemies.Add(this);
+            state = State.Idle;
+            Enemy.list.Add(this);
         }
 
         private void OnDestroy()
         {
-            Services.instance.enemies.Remove(this);
+            Enemy.list.Remove(this);
         }
 
         IEnumerator Start()
@@ -68,6 +73,7 @@ namespace Enemies
 
             // Initialize states of the state machine
             this.attackState = new EnemyAttack.State(
+                animatorFSM,
                 enemyAttackSettings.settings,
                 navMeshAgent,
                 player.transform);
@@ -129,7 +135,7 @@ namespace Enemies
                                 {
                                     if (attackState.done)
                                     {
-                                        newState = State.Wandering;
+                                        newState = State.Idle;
                                     }
                                 }
                                 break;
@@ -145,6 +151,12 @@ namespace Enemies
                     {
                         switch (newState)
                         {
+                            case State.Idle:
+                                {
+                                    animatorFSM.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
+                                }
+                                break;
+
                             case State.FollowHero:
                             case State.Wandering:
                                 {
@@ -152,6 +164,16 @@ namespace Enemies
                                     {
                                         animatorFSM.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
                                     }
+                                    else
+                                    {
+                                        animatorFSM.RequestChangePlayerState(CharacterStateMachine.CharacterState.walking);
+                                    }
+                                }
+                                break;
+
+                            case State.Attack:
+                                {
+                                    animatorFSM.RequestChangePlayerState(CharacterStateMachine.CharacterState.attacking);
                                 }
                                 break;
 
@@ -168,7 +190,7 @@ namespace Enemies
                         // Exit the previous state
                         if (lastCoroutine != null)
                         {
-                            Debug.Log("Stopping previous state " + state);
+                            //Debug.Log("Stopping previous state " + state);
 
                             StopCoroutine(lastCoroutine);
 
@@ -185,11 +207,10 @@ namespace Enemies
                                 case State.Attack:
                                     attackState.Exit();
                                     break;
-
                             }
                         }
 
-                        Debug.Log("Starting new state state " + newState);
+                        //Debug.Log("Starting new state state " + newState);
 
                         // Enter the new state
                         switch (newState)

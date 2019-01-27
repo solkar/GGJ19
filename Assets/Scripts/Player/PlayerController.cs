@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     PlayerConfig parameters;
 
-    private float speed, dashLength, dashRefillRate, attackHitPoints, attackRange, initialSpeed;
+    private float speed, dashLength, dashRefillRate, attackHitPoints, attackRange, attackDistance, initialSpeed;
     public int numberOfDashesAvailable;
     private int maxDashAvailable;
 
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
         //Player setup stuff
         speed = parameters.playerConfig.speed;
         attackHitPoints = parameters.playerConfig.attackDamage;
+        attackDistance = parameters.playerConfig.attackDistance;
         attackRange = parameters.playerConfig.attackRange;
         //Dash stuff
         dashRefillRate = parameters.playerConfig.dashRefillRate;
@@ -66,8 +67,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        var fireButton1 = Input.GetAxisRaw("Fire1") != 0 || Input.GetKeyDown(KeyCode.Space);
+        var fireButton2 = Input.GetAxisRaw("Fire2") != 0;
+
         //If Fire1 and not attacking, the player can attack
-        if (Input.GetAxisRaw("Fire1") != 0)
+        if (fireButton1)
         {
             if(isAttackAxisAlreadyDown == false) // gate to only take attack input the frame the butotn is down
             {
@@ -80,13 +84,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(Input.GetAxisRaw("Fire1") == 0) // reset attack input gate
+        if (!fireButton1) // reset attack input gate
         {
             isAttackAxisAlreadyDown = false;
         }
 
         //Ff Fire2 and there are dashing points available, the player will dash
-        if (Input.GetAxisRaw("Fire2") != 0)
+        if (fireButton2)
         {
             if (isDashAxisAlreadyDown == false) // gate to only take dash input the frame the button is down
             {
@@ -99,7 +103,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(Input.GetAxisRaw("Fire2") == 0) // reset dash input gate
+        if(!fireButton2) // reset dash input gate
         {
             isDashAxisAlreadyDown = false;
         }
@@ -142,22 +146,15 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(parameters.playerConfig.attackAnimation.length);
 
-        stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
-    }
-
-    //Hitting the enemy
-    public static bool HitCheck(Transform target, Transform origin, float distance, float range)
-    {
-        var vectorToCollider = (target.position - origin.position);
-        if (vectorToCollider.sqrMagnitude < distance * distance)
+        foreach (var enemy in Enemies.Enemy.list)
         {
-            var angle = Mathf.Cos(range / 2 * Mathf.Deg2Rad);
-            if (Vector3.Dot(vectorToCollider.normalized, origin.forward) > angle)
+            if (enemy != null && Hit.HitCheck(enemy.transform, transform, attackDistance, attackRange))
             {
-                return true;
+                enemy.GetComponent<UnitHealth>().TakeDamage(attackHitPoints);
             }
         }
-        return false;
+
+        stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
     }
 
     IEnumerator ExecuteDash(float interval)
@@ -187,6 +184,28 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(RefillDash());
         }
+    }
 
+    public void TakeDamage(float amount)
+    {
+        var health = GetComponent<UnitHealth>();
+        if (health != null)
+        {
+            health.TakeDamage(amount);
+
+            EventBus.OnPlayerDamage.Invoke();
+
+            /*
+            if (health.health <= 0)
+            {
+                stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.dead);
+                enabled = false;
+
+                EventBus.OnPlayerDead.Invoke();
+            }
+            */
+        }
+
+        stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.takingHit);
     }
 }

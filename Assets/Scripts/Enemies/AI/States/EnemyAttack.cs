@@ -33,16 +33,19 @@ namespace Enemies
 
             public bool done { get; private set; }
 
+            private CharacterStateMachine animatorFSM;
             private Settings settings;
             private Transform target;
             private NavMeshAgent agent;
 
             public State(
+                CharacterStateMachine animatorFSM,
                 Settings settings,
                 NavMeshAgent agent,
                 Transform target
             )
             {
+                this.animatorFSM = animatorFSM;
                 this.settings = settings;
                 this.target = target;
                 this.agent = agent;
@@ -52,10 +55,13 @@ namespace Enemies
             {
                 done = false;
 
+                animatorFSM.RequestChangePlayerState(CharacterStateMachine.CharacterState.attacking);
+
                 yield return new WaitForSeconds(settings.timeBetweenAttacks);
 
                 if (Hit.HitCheck(target, agent.transform, settings.attackDistance, settings.attackRange))
                 {
+                    target.GetComponent<PlayerController>()?.TakeDamage(1);
                     Debug.Log("Damageeee!!!");
                 }
 
