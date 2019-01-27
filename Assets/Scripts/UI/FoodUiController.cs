@@ -10,9 +10,4 @@ public class FoodUiController : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
