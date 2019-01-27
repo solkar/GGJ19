@@ -21,7 +21,7 @@ MonoBehaviour:
     characterHealth: 3
     hitStunTime: 2
     invincibilityTime: 2
-    attackDamage: 2
+    attackDamage: 1
     attackRange: 360
     attackWindUpTime: 5
     attackStrikeTime: 5
