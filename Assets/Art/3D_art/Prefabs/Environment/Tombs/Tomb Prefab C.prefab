@@ -31,6 +31,22 @@ Transform:
   m_Father: {fileID: 4759350123653383143}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &8206764998384203199
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584772077060911677}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2276228630676383983
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4759350123653383143}
   m_Layer: 0
-  m_Name: Tomb Prefab 2
+  m_Name: Tomb Prefab C
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,6 +134,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: cemetery03
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 61ee2091d22f948269a905deff8f1219, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 61ee2091d22f948269a905deff8f1219, type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 61ee2091d22f948269a905deff8f1219, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -167,6 +191,12 @@ PrefabInstance:
 --- !u!4 &1584772077060877855 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: 61ee2091d22f948269a905deff8f1219,
+    type: 3}
+  m_PrefabInstance: {fileID: 1584772077061010589}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1584772077060911677 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 61ee2091d22f948269a905deff8f1219,
     type: 3}
   m_PrefabInstance: {fileID: 1584772077061010589}
   m_PrefabAsset: {fileID: 0}

@@ -208,6 +208,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: straightpath
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4ee27b97b51d14adca49bf2dfdbc5981, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 4ee27b97b51d14adca49bf2dfdbc5981, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
