@@ -7,6 +7,7 @@ public struct PlayerScriptableParameters
     [Header("Character Movement")]
     public float speed;
     public float dashLength;
+    public float dashDuration;
     public float dashRefillRate;
     public int numberOfDashesAvailable;
 
@@ -23,7 +24,7 @@ public struct PlayerScriptableParameters
     public float attackRecoverTime;
     public float attackKnockBack;
 
-    [Header("Character Combat System")]
+    [Header("Character Animation System")]
     public AnimationClip attackAnimation;
 }
 

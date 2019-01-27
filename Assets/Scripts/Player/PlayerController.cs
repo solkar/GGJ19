@@ -8,16 +8,44 @@ public class PlayerController : MonoBehaviour
     PlayerConfig parameters;
 
     private float speed, dashLength, dashRefillRate, attackHitPoints, attackRange, initialSpeed;
-    private int numberOfDashesAvailable;
+    public int numberOfDashesAvailable;
+    private int maxDashAvailable;
 
     private readonly float gravity = 20.0f;
     private Vector3 moveDirection = Vector3.zero, lastPosition = new Vector3(0, 0, 0);
     private CharacterController controller;
     private CharacterStateMachine stateMachine;
-    private bool playerCanMove = true;
     Animator animator;
 
-    private bool isAttackAxisInUse = false;
+    private bool isAttackAxisAlreadyDown = false;
+    private bool isDashAxisAlreadyDown = false;
+
+    private bool canAttack
+    {
+        get
+        {
+            return stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.idle ||
+                    stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.walking;
+        }
+    }
+    private bool canDash
+    {
+        get
+        {
+            return numberOfDashesAvailable > 0 &&
+                    (stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.idle ||
+                    stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.walking);
+        }
+    }
+    private bool canMove
+    {
+        get
+        {
+            return stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.idle ||
+                    stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.walking ||
+                    stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.dashing;
+        }
+    }
 
     void Start()
     {
@@ -32,47 +60,62 @@ public class PlayerController : MonoBehaviour
         dashRefillRate = parameters.playerConfig.dashRefillRate;
         dashLength = parameters.playerConfig.dashLength;
         numberOfDashesAvailable = parameters.playerConfig.numberOfDashesAvailable;
+        maxDashAvailable = parameters.playerConfig.numberOfDashesAvailable;
         initialSpeed = speed;
     }
 
     void Update()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Axe_Attack"))
-            playerCanMove = false;
-        else
-            playerCanMove = true;
-
-        //If can move and its not attacking, change the state to walking
-        if (playerCanMove)
-        {
-            MovePlayer();
-            if (lastPosition != gameObject.transform.position)
-                stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.walking);
-            else
-                stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
-        }
-
         //If Fire1 and not attacking, the player can attack
-        if (Input.GetAxisRaw("Fire1") != 0 && stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.attacking)
+        if (Input.GetAxisRaw("Fire1") != 0)
         {
-            if(isAttackAxisInUse == false)
+            if(isAttackAxisAlreadyDown == false) // gate to only take attack input the frame the butotn is down
             {
-                isAttackAxisInUse = true;
-                stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.attacking);
-                ReturnToIdleWhenAttackIsOver();
+                isAttackAxisAlreadyDown = true;
+                if(canAttack)
+                {
+                    stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.attacking);
+                    StartCoroutine(ReturnToIdleWhenAttackIsOver());
+                }
             }
         }
 
-        if(Input.GetAxisRaw("Fire1") == 0)
+        if(Input.GetAxisRaw("Fire1") == 0) // reset attack input gate
         {
-            isAttackAxisInUse = false;
+            isAttackAxisAlreadyDown = false;
         }
 
         //Ff Fire2 and there are dashing points available, the player will dash
-        if (Input.GetAxisRaw("Fire2") != 0 && numberOfDashesAvailable > 0 && stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.walking)
+        if (Input.GetAxisRaw("Fire2") != 0)
         {
-            stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.dashing);
-            PerformeDashing();
+            if (isDashAxisAlreadyDown == false) // gate to only take dash input the frame the button is down
+            {
+                isDashAxisAlreadyDown = true;
+                if(canDash)
+                {
+                    stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.dashing);
+                    PerformDashing();
+                }
+            }
+        }
+
+        if(Input.GetAxisRaw("Fire2") == 0) // reset dash input gate
+        {
+            isDashAxisAlreadyDown = false;
+        }
+
+        //If can move and its not attacking, change the state to walking
+        if (canMove)
+        {
+            MovePlayer();
+
+            if(stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.dashing)
+            {
+                if (lastPosition != gameObject.transform.position)
+                    stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.walking);
+                else
+                    stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
+            }
         }
 
         lastPosition = gameObject.transform.position;
@@ -90,11 +133,9 @@ public class PlayerController : MonoBehaviour
         controller.Move(moveDirection * Time.deltaTime);
     }
 
-    private void PerformeDashing()
+    private void PerformDashing()
     {
-        StartCoroutine(ExecuteDash(0.6f));
-        numberOfDashesAvailable--;
-        stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.walking);
+        StartCoroutine(ExecuteDash(parameters.playerConfig.dashDuration));
     }
 
     private IEnumerator ReturnToIdleWhenAttackIsOver()
@@ -121,8 +162,31 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator ExecuteDash(float interval)
     {
+        StopCoroutine(RefillDash());
+
         speed *= dashLength;
         yield return new WaitForSeconds(interval);
         speed = initialSpeed;
+        
+        stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.walking);
+
+        numberOfDashesAvailable--;
+        StartCoroutine(RefillDash());
+    }
+
+    public IEnumerator RefillDash()
+    {
+        yield return new WaitForSeconds(parameters.playerConfig.dashRefillRate);
+
+        if(numberOfDashesAvailable < maxDashAvailable)
+        {
+            numberOfDashesAvailable++;
+        }
+
+        if (numberOfDashesAvailable < maxDashAvailable)
+        {
+            StartCoroutine(RefillDash());
+        }
+
     }
 }

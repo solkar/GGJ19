@@ -7,7 +7,11 @@ public class CharacterStateMachine : MonoBehaviour
         idle, walking, attacking, dashing, takingHit, dead
     }
 
+    [SerializeField]
     private CharacterState currentState;
+
+    [SerializeField]
+    private bool displayDebug = false;
 
     private Animator playerAnimator;
 
@@ -51,7 +55,8 @@ public class CharacterStateMachine : MonoBehaviour
                 break;
         }
 
-        Debug.Log("Current state is " + currentState);
+        if(displayDebug)
+            Debug.Log("Current state is " + currentState);
     }
 
     private void IdleState()
