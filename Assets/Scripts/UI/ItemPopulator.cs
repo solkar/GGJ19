@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ItemPopulator : MonoBehaviour
 {
-    private List<InventoryItemView> _childList = new List<InventoryItemView>();
+    public List<InventoryItemView> _childList = new List<InventoryItemView>();
     
     // Start is called before the first frame update
     void Start()

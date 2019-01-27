@@ -21,6 +21,6 @@ public class InventoryItemView : MonoBehaviour
 
    private void OnClick()
    {
-      Inventory.instance.OnConsumeItem(_item);
+      Inventory.instance.ConsumeItem(_item);
    }
 }

@@ -19,6 +19,7 @@ public class Inventory : Singleton<Inventory>
     }
 
     [SerializeField] private SpriteBank _spriteBank;
+    [SerializeField] private List<Item> _carryingItemList;
     
     [Serializable]
     public struct Item
@@ -51,13 +52,31 @@ public class Inventory : Singleton<Inventory>
         return list;
     }
 
-    public void OnConsumeItem(Item item)
+    public void ConsumeItem(Item item)
     {
-        Debug.LogWarning("Consume item:" + item.name);
+        Debug.Log("Inventory - Consume item:" + item.name);
+
+        RemoveItem(item);
+        
+        EventBus.OnConsumeItem.Invoke(item);
     }
 
     public void AddItem(Item item)
     {
         // TODO: limit to 8 items
+        if (_carryingItemList.Count == 8)
+        {
+            EventBus.OnInventoryFull.Invoke();
+        }
+    }
+
+    private void RemoveItem(Item item)
+    {
+        _carryingItemList.Remove(item);
+
+        if (_carryingItemList.Count == 0)
+        {
+            EventBus.OnInventoryEmpty.Invoke();
+        }
     }
 }

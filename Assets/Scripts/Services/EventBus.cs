@@ -49,4 +49,12 @@ public static class EventBus
     public static Event OnPlayerHealthMax = new Event();
 
     #endregion
+    
+    #region Inventory Events
+    
+    public static Event<Inventory.Item> OnConsumeItem = new Event<Inventory.Item>();
+    public static Event OnInventoryFull = new Event();
+    public static Event OnInventoryEmpty = new Event();
+    
+    #endregion
 }
