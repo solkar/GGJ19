@@ -5,9 +5,10 @@ using UnityEngine;
 /// <summary>
 /// To anyone readying this, don't be like me, don't do this. This is bad! bad! bad!
 /// </summary>
-public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public class Singleton<T> : MonoBehaviour 
+    where T : Singleton<T>
 {
-    public T instance { set; get; }
+    public static T instance { set; get; }
 
     protected void Awake()
     {
@@ -17,6 +18,8 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
         }
         else
         {
+            instance = this as T;
+
             OnAwake();
         }
     }
