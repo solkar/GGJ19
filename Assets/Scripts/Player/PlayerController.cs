@@ -7,16 +7,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     PlayerConfig parameters;
 
-    private float speed, dashLength, dashRefillRate, attackHitPoints, attackRange;
+    private float speed, dashLength, dashRefillRate, attackHitPoints, attackRange, initialSpeed;
     private int numberOfDashesAvailable;
 
     private readonly float gravity = 20.0f;
     private Vector3 moveDirection = Vector3.zero, lastPosition = new Vector3(0, 0, 0);
     private CharacterController controller;
     private CharacterStateMachine stateMachine;
-
+    private bool playerCanMove = true;
+    Animator animator;
     void Start()
     {
+        animator = GetComponent<Animator>();
         stateMachine = GetComponent<CharacterStateMachine>();
         controller = GetComponent<CharacterController>();
         //Player setup stuff
@@ -27,77 +29,85 @@ public class PlayerController : MonoBehaviour
         dashRefillRate = parameters.playerConfig.dashRefillRate;
         dashLength = parameters.playerConfig.dashLength;
         numberOfDashesAvailable = parameters.playerConfig.numberOfDashesAvailable;
-
+        initialSpeed = speed;
     }
 
     void Update()
     {
-        if (stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.attacking)
-            MovePlayer();
-
-        if (lastPosition != gameObject.transform.position)
-            stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.walking);
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Axe_Attack"))
+            playerCanMove = false;
         else
-            stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
+            playerCanMove = true;
 
-        if (Input.GetKey(KeyCode.Mouse0) && stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.walking && stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.attacking)
+        //If can move and its not attacking, change the state to walking
+        if (playerCanMove)
+        {
+            MovePlayer();
+            if (lastPosition != gameObject.transform.position)
+                stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.walking);
+            else
+                stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
+        }
+
+        //If Fire1 and not attacking, the player can attack
+        if (Input.GetAxisRaw("Fire1") != 0 && stateMachine.GetCurrentState() != CharacterStateMachine.CharacterState.attacking)
         {
             stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.attacking);
             PerformAttack();
         }
-
-        if (Input.GetKey(KeyCode.Mouse1))
+        //Ff Fire2 and there are dashing points available, the player will dash
+        if (Input.GetAxisRaw("Fire2") != 0 && numberOfDashesAvailable > 0 && stateMachine.GetCurrentState() == CharacterStateMachine.CharacterState.walking)
         {
             stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.dashing);
             PerformeDashing();
         }
 
         lastPosition = gameObject.transform.position;
-        // Apply movement based on gravity
-
-        moveDirection.y = moveDirection.y - (gravity * Time.deltaTime);
-
-        // Move the controller
-        controller.Move(moveDirection * Time.deltaTime);
     }
 
     private void MovePlayer()
     {
-        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical")).normalized;
         if (moveDirection != Vector3.zero)
             transform.rotation = Quaternion.LookRotation(moveDirection);
         moveDirection = moveDirection * speed;
-        moveDirection.Normalize();
+        // Apply movement based on gravity
+        moveDirection.y = moveDirection.y - (gravity * Time.deltaTime);
+        // Move the controller
+        controller.Move(moveDirection * Time.deltaTime);
     }
 
     private void PerformeDashing()
     {
-        moveDirection = moveDirection * dashLength;
-        moveDirection.Normalize();
+        StartCoroutine(ExecuteDash(0.6f));
+        numberOfDashesAvailable--;
+        stateMachine.RequestChangePlayerState(stateModifier: CharacterStateMachine.CharacterState.walking);
     }
 
     private void PerformAttack()
     {
-
+        stateMachine.RequestChangePlayerState(CharacterStateMachine.CharacterState.idle);
     }
 
     //Hitting the enemy
-    private void OnTriggerEnter(Collider col)
+    public static bool HitCheck(Transform target, Transform origin, float distance, float range)
     {
-        if (col.gameObject.tag == "Enemy")
+        var vectorToCollider = (target.position - origin.position);
+        if (vectorToCollider.sqrMagnitude < distance * distance)
         {
-            col.gameObject.GetComponent<EnemyManager>().TakeHit(amount: attackHitPoints);
-            Debug.Log("Damageeeeee!!");
+            var angle = Mathf.Cos(range / 2 * Mathf.Deg2Rad);
+            if (Vector3.Dot(vectorToCollider.normalized, origin.forward) > angle)
+            {
+                return true;
+            }
         }
-        //var vectorToCollider = (collider.transform.position - transform.position);
-        //if (vectorToCollider.sqrMagnitude < attackRange * attackRange)
-        //{
-        //var angle = Mathf.Cos(attackRange / 2 * Mathf.Deg2Rad);
-        //if (Vector3.Dot(vectorToCollider.normalized, transform.forward) > angle)
-        //{
-
-        //}
-        //}
+        return false;
     }
 
+    IEnumerator ExecuteDash(float interval)
+    {
+        speed *= dashLength;
+        yield return new WaitForSeconds(interval);
+        speed = initialSpeed;
+    }
 }

@@ -5,28 +5,28 @@ using UnityEngine;
 public class PlayerParametersManager : MonoBehaviour
 {
     [SerializeField]
-    int characterHealth = 0;
+    int characterHealth, dashingPoints;
     [SerializeField]
-    float characterHitStunTime = 0, characterInvincibilityTime = 0;
+    float characterHitStunTime, characterInvincibilityTime;
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void PlayerTookHit(int damage)
     {
-        
-    }
-
-    private void PlayerTookHit()
-    {
-
+        characterHealth -= damage;
     }
 
     private void PlayerGotInvincible()
     {
 
+    }
+
+    IEnumerator RefillDashingPoints(float time)
+    {
+        yield return new WaitForSeconds(time);
+        dashingPoints++;
     }
 }
